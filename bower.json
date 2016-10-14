@@ -1,0 +1,24 @@
+{
+  "name": "githubapi",
+  "description": "a website where users may enter a github username into a form, submit it, and see names and descriptions of that user's public respositories",
+  "main": "index.js",
+  "authors": [
+    "Meredith Alcorn"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "github"
+  ],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.1.1",
+    "bootstrap": "^3.3.7"
+  }
+}
