@@ -22,19 +22,13 @@ var lib = require('bower-files')({
 var browserSync = require('browser-sync').create();
 var buildProduction = utilities.env.production;
 
+
 gulp.task('jsBrowserify', ['concatInterface'], function() {
   return browserify({ entries: ['./tmp/allConcat.js'] })
     .bundle()
     .pipe(source('app.js'))
     .pipe(gulp.dest('./build/js'));
 });
-
-gulp.task('concatInterface', function() {
-  return gulp.src(['./js/*-interface.js'])
-  .pipe(concat('allConcat.js'))
-  .pipe(gulp.dest('./tmp'));
-});
-
 
 gulp.task('concatInterface', function() {
   return gulp.src(['./js/*-interface.js'])
@@ -48,31 +42,31 @@ gulp.task("minifyScripts", ["jsBrowserify"], function(){
     .pipe(gulp.dest("./build/js"));
 });
 
-gulp.task("clean", function() {
+gulp.task("clean", function(){
   return del(['build', 'tmp']);
 });
 
-gulp.task("build", ['clean'], function() {
+gulp.task("build", ['clean'], function(){
   if (buildProduction) {
     gulp.start('minifyScripts');
   } else {
     gulp.start('jsBrowserify');
-    }
+  }
     gulp.start('bower');
     gulp.start('cssBuild')
 });
 
-gulp.task('jshint', function() {
+gulp.task('jshint', function(){
   return gulp.src(['js/*.js'])
   .pipe(jshint())
   .pipe(jshint.reporter('default'));
 });
 
-gulp.task('bowerJS', function () {
+gulp.task('bowerJS', function(){
   return gulp.src(lib.ext('js').files)
-    .pipe(concat('vendor.min.js'))
-    .pipe(uglify())
-    .pipe(gulp.dest('./build/js'));
+  .pipe(concat('vendor.min.js'))
+  .pipe(uglify())
+  .pipe(gulp.dest('./build/js'));
 });
 
 gulp.task('bowerCSS', function(){
@@ -92,23 +86,22 @@ gulp.task('cssBuild', function() {
 
 gulp.task('bower', ['bowerJS', 'bowerCSS']);
 
-gulp.task('serve', function() {
+gulp.task('serve', function(){
   browserSync.init({
     server: {
       baseDir: "./",
       index: "index.html"
-    }
+      }
+    });
+    gulp.watch(['js/*.js'], ['jsBuild']);
+    gulp.watch(['bower.json'], ['bowerBuild']);
+    gulp.watch(['scss/*scss'], ['cssBuild']);
   });
 
-  gulp.watch(['js/*.js'], ['jsBuild']);
-  gulp.watch(['bower.json'], ['bowerBuild']);
-  gulp.watch(['scss/*scss'], ['cssBuild']);
-});
+  gulp.task('jsBuild', ['jsBrowserify', 'jshint'], function(){
+    browserSync.reload();
+  });
 
-gulp.task('jsBuild', ['jsBrowserify', 'jshint'], function(){
-  browserSync.reload();
-});
-
-gulp.task('bowerBuild', ['bower'], function(){
-  browserSync.reload();
-});
+  gulp.task('bowerBuild', ['bower'], function(){
+    browserSync.reload();
+  });
