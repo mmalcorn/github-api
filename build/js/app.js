@@ -16,6 +16,8 @@ Git.prototype.getRepos = function(username, displayFunction){
   });
   $.get('https://api.github.com/users/' + username + '/repos?access_token=' + apiKey).then(function(response){
     console.log(response);
+    for(gitApi=0; gitApi < response.length; gitApi++)
+    console.log(response[gitApi].name);
   });
 }
 
