@@ -9,7 +9,7 @@
   "keywords": [
     "github"
   ],
-  "homepage": "",
+  "homepage": "https://github.com/mmalcorn/github-api",
   "ignore": [
     "**/.*",
     "node_modules",

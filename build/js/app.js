@@ -7,8 +7,9 @@ var apiKey = require('./../.env').apiKey;
 function Git(){
 }
 
-Git.prototype.getRepos = function(username){
+Git.prototype.getRepos = function(username, displayFunction){
   $.get('https://api.github.com/users/' + username + '?access_token=' + apiKey).then(function(response){
+    displayFunction(username, response.main);
     console.log(response);
   }).fail(function(error){
     $('#repos').text(error.responseJSON.message);
@@ -20,13 +21,16 @@ exports.gitModule = Git;
 },{"./../.env":1}],3:[function(require,module,exports){
 var Git = require('./../js/github.js').gitModule;
 
+var displayGitUserInfo = function(username, userData) {
+  $('#repos').text("Here are " + username +"'s repositories " + userData);
+};
+
 $(document).ready(function(){
   var gitSearch = new Git();
-  $('#git-hub-repo').submit(function(event) {
-    event.preventDefault();
+  $('#userNameButton').click(function() {
     var username = $('#username').val();
     alert(username);
-    gitSearch.getRepos(username);
+    gitSearch.getRepos(username, displayGitUserInfo);
   });
 });
 
