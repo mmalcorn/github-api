@@ -9,7 +9,7 @@ function Git(){
 
 Git.prototype.getRepos = function(username, displayFunction){
   $.get('https://api.github.com/users/' + username + '?access_token=' + apiKey).then(function(response){
-    displayFunction(username, response.repos_url);
+    displayFunction(username, response.login);
     console.log(response);
   }).fail(function(error){
     $('#repos').text(error.responseJSON.message);
@@ -17,7 +17,7 @@ Git.prototype.getRepos = function(username, displayFunction){
   $.get('https://api.github.com/users/' + username + '/repos?access_token=' + apiKey).then(function(response){
     console.log(response);
     for(gitApi=0; gitApi < response.length; gitApi++)
-    console.log(response[gitApi].name);
+    $("#repos").append("<li>" + response[gitApi].name + "</li>" + "<p id='description'>" + response[gitApi].description) + "</p>" + "<br>"
   });
 }
 
@@ -26,15 +26,14 @@ exports.gitModule = Git;
 },{"./../.env":1}],3:[function(require,module,exports){
 var Git = require('./../js/github.js').gitModule;
 
-var displayGitUserInfo = function(username, userData) {
-  $('#repos').text("Here are " + username +"'s repositories " + userData);
+var displayGitUserInfo = function(username) {
+  $('#repo-message').text("Here are " + username +"'s repositories: ");
 };
 
 $(document).ready(function(){
   var gitSearch = new Git();
   $('#userNameButton').click(function() {
     var username = $('#username').val();
-    alert(username);
     gitSearch.getRepos(username, displayGitUserInfo);
   });
 });

@@ -5,7 +5,7 @@ function Git(){
 
 Git.prototype.getRepos = function(username, displayFunction){
   $.get('https://api.github.com/users/' + username + '?access_token=' + apiKey).then(function(response){
-    displayFunction(username, response.repos_url);
+    displayFunction(username, response.login);
     console.log(response);
   }).fail(function(error){
     $('#repos').text(error.responseJSON.message);
@@ -13,7 +13,7 @@ Git.prototype.getRepos = function(username, displayFunction){
   $.get('https://api.github.com/users/' + username + '/repos?access_token=' + apiKey).then(function(response){
     console.log(response);
     for(gitApi=0; gitApi < response.length; gitApi++)
-    console.log(response[gitApi].name);
+    $("#repos").append("<li>" + response[gitApi].name + "</li>" + "<p id='description'>" + response[gitApi].description) + "</p>" + "<br>"
   });
 }
 

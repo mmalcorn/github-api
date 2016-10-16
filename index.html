@@ -9,11 +9,26 @@
   </head>
   <body>
     <div class="container">
-        <label for="username">Enter a GitHub username:</label>
-        <input id="username" type="text">
-        <button class="btn btn-success" id="userNameButton">Submit</button>
-      </form>
-      <div id="repos"></div>
+      <div class="row">
+        <div class="col-sm-4-centered">
+          <h3>Find the repositories for a GitHub user.</h3>
+  
+        </div>
+          <div class="col-sm-4">
+          <label for="username">Enter a GitHub username:</label>
+          <input id="username" type="text" placeholder="Type Username">
+          <button class="btn btn-success" id="userNameButton">Submit</button>
+        </div>
+        </form>
+        <div class="col-sm-4">
+          <br>
+          <br>
+        <ul id="repo-message"></ul>
+        <ol id="repos">
+          <p id="description"></p>
+        </ol>
+      </div>
+      </div>
     </div>
   </body>
 </html>
